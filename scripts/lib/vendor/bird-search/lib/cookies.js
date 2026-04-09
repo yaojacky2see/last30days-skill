@@ -117,14 +117,21 @@ async function readTwitterCookiesFromBrowser(options) {
     }
     return { cookies: out, warnings };
 }
+async function extractCookiesFromBrowser(options) {
+    const { getCookies } = await loadSweetCookie();
+    return readTwitterCookiesFromBrowser({
+        getCookies,
+        ...options,
+    });
+}
 export async function extractCookiesFromSafari() {
-    return readTwitterCookiesFromBrowser({ source: 'safari' });
+    return extractCookiesFromBrowser({ source: 'safari' });
 }
 export async function extractCookiesFromChrome(profile) {
-    return readTwitterCookiesFromBrowser({ source: 'chrome', chromeProfile: profile });
+    return extractCookiesFromBrowser({ source: 'chrome', chromeProfile: profile });
 }
 export async function extractCookiesFromFirefox(profile) {
-    return readTwitterCookiesFromBrowser({ source: 'firefox', firefoxProfile: profile });
+    return extractCookiesFromBrowser({ source: 'firefox', firefoxProfile: profile });
 }
 /**
  * Resolve Twitter credentials from multiple sources.
